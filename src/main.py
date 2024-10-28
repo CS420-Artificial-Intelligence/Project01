@@ -1,25 +1,21 @@
-from map import Map
-from obj import Object
-import pygame
+import pygame as pyg 
+from block import Block
 
 
-obj = Object("assets/wall.png")
+img = pyg.image.load("assets/rock.jpeg")
 
-pygame.init()
+position = (20, 20)
+crop = (167, 50, 301 - 167, 167 - 50)
 
-screen_width, screen_height = 800, 600
-screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption('Simple Pygame Example')
+block = Block(img, position[0], position[1], crop)
 
-
+screen = pyg.display.set_mode((800, 600))
 running = True
+
 while running:
-    screen.fill((0, 0, 0))
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+    for event in pyg.event.get():
+        if event.type == pyg.QUIT:
             running = False
-
-    obj.draw(screen, 0, 0)
-
-    pygame.display.flip()
+    screen.fill((0, 0, 0))
+    block.draw(screen)
+    pyg.display.flip()
