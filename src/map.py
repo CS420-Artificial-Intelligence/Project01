@@ -2,17 +2,18 @@
 import pygame 
 
 class Map:
+    def __init__(self):
+        self.maze = []
+        self.stones = []
+        self.switches = []
+        self.ares_position = None
+    
     def __init__(self, filename): 
-
-        #input from file
+        self.load_from_file(filename)
+        
+    def load_from_file(self, filename):
         with open(filename, 'r') as file:
             input_data = file.read()
-
-        self.maze = []
-        self.stones = []  
-        self.switches = []  
-        self.ares_position = None
-
         lines = input_data.strip().split('\n')
         stone_weights = list(map(int, lines[0].split()))
         
@@ -24,24 +25,21 @@ class Map:
                 if char == '$':  # Stone
                     self.stones.append((r, c, stone_weights[stone_index]))
                     stone_index += 1
-                elif char == '@' or char == '+':  # Ares
-                    ares_position = (r, c)
-                elif char == '.':  # Switch
-                    self.switches.append((r, c))
                 elif char == '*':  # Stone on switch
                     self.stones.append((r, c, stone_weights[stone_index]))
                     self.switches.append((r, c))
                     stone_index += 1
-            self.maze.append(row)
-        # with open(filename) as f:
-        #     self.stones = list(map(int, f.readline().split()))
-        #     while True:
-        #         line = f.readline()
-        #         if not line:
-        #             break
-        #         line = line[:-1]
-        #         self.map.append(line)
-
+                elif char == '@': # Ares
+                    self.ares_position = (r, c)
+                elif char == '+':  # Ares on switch
+                    self.ares_position = (r, c)
+                    self.switches.append((r, c))
+                elif char == '.':  # Switch
+                    self.switches.append((r, c))
+                
+        self.maze.append(row)
+    
+    
     def getMap(self):
         return {
             'maze': self.maze,
