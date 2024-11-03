@@ -18,7 +18,7 @@ class Map:
     def draw(self, screen):
         for i in range(len(self.matrix)):
             for j in range(len(self.matrix[i])):
-                if self.matrix[i][j] == "1":
+                if self.matrix[i][j] == "#":
                     self.wall_block.changePosition(j * 33, i * 33)
                     self.wall_block.draw(screen)
                 else:
