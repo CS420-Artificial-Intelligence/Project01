@@ -9,3 +9,5 @@ class Queue(search_ds.SearchDataStructure):
         self.queue.append(item)
     def clear(self):
         self.queue.clear()
+    def is_empty(self):
+        return len(self.queue) == 0

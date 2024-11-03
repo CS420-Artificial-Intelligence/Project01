@@ -9,3 +9,5 @@ class Stack(search_ds.SearchDataStructure):
         self.stack.append(item)
     def clear(self):
         self.stack.clear()
+    def is_empty(self):
+        return len(self.stack) == 0

@@ -8,3 +8,5 @@ class SearchDataStructure:
         pass
     def clear(self):
         pass
+    def is_empty(self):
+        pass

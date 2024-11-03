@@ -45,3 +45,5 @@ class PriorityQueue(search_ds.SearchDataStructure):
                 break
     def clear(self):
         self.queue.clear()
+    def is_empty(self):
+        return len(self.queue) == 0
