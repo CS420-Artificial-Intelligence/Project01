@@ -16,6 +16,7 @@ class Block(pyg.sprite.Sprite):
     def chooseSprite(self, crop):
         self.img = self.raw_img.subsurface(crop)
         self.rect = pyg.Rect(self.rect.x, self.rect.y, crop[2], crop[3])
-
+    def changePosition(self, x, y):
+        self.rect = pyg.Rect(x, y, self.rect.width, self.rect.height)
     def draw(self, screen):
         screen.blit(self.img, self.rect)
