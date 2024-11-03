@@ -6,16 +6,26 @@ import pygame as pyg
 
 class Block(pyg.sprite.Sprite):
 
-    def __init__(self, image, x, y, crop):
+    def __init__(self, image, rect, crop):
+        
         pyg.sprite.Sprite.__init__(self)
         self.raw_img = image
 
+        # if crop[2] == -1 that mean use the whole image
+        if crop[2] == -1:
+            crop = (0, 0, image.get_width(), image.get_height())
+        
         self.img = self.raw_img.subsurface(crop)
-        self.rect = pyg.Rect(x, y, crop[2], crop[3])
-    
+        self.img = pyg.transform.scale(self.img, (rect[2], rect[3]))
+        self.rect = pyg.Rect(rect)
+    def setCropTable(self, cropTable):
+        self.cropTable = cropTable
     def chooseSprite(self, crop):
         self.img = self.raw_img.subsurface(crop)
-        self.rect = pyg.Rect(self.rect.x, self.rect.y, crop[2], crop[3])
+    def chooseSpriteByIndex(self, index):
+        crop = self.cropTable[index]
+        self.img = self.raw_img.subsurface(crop)
+
     def changePosition(self, x, y):
         self.rect = pyg.Rect(x, y, self.rect.width, self.rect.height)
     def draw(self, screen):
