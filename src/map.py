@@ -17,6 +17,26 @@ class Map:
             self.matrix = [list(line) for line in file]
     def setBlockSizes(self, block_size):
         self.block_size = block_size
+        self.wall_block.changeSize(block_size, block_size)
+        self.nonwall_block.changeSize(block_size, block_size)
+        self.switch_block.changeSize(block_size, block_size)
+        self.stone_entity.changeSize(block_size, block_size)
+        self.ares_entity.changeSize(block_size, block_size)
+    def increaseBlockSizes(self):
+        self.block_size += 5
+        self.wall_block.changeSize(self.block_size, self.block_size)
+        self.nonwall_block.changeSize(self.block_size, self.block_size)
+        self.switch_block.changeSize(self.block_size, self.block_size)
+        self.stone_entity.changeSize(self.block_size, self.block_size)
+        self.ares_entity.changeSize(self.block_size, self.block_size)
+    def decreaseBlockSizes(self):
+        self.block_size -= 5
+        self.wall_block.changeSize(self.block_size, self.block_size)
+        self.nonwall_block.changeSize(self.block_size, self.block_size)
+        self.switch_block.changeSize(self.block_size, self.block_size)
+        self.stone_entity.changeSize(self.block_size, self.block_size)
+        self.ares_entity.changeSize(self.block_size, self.block_size)
+
     def addBias(self, x, y):
         self.screenbias[1] -= x
         self.screenbias[0] -= y

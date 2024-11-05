@@ -40,6 +40,13 @@ def game_screen():
         if event.type == pyg.QUIT:
             print("Quit")
             return 0
+        if event.type == pyg.KEYDOWN:
+            # print key 
+            if event.key == 61:
+                map.increaseBlockSizes()
+            if event.key == 45:
+                map.decreaseBlockSizes()
+
     game_surface.fill((255, 255, 255))
     map.draw(game_surface)
     screen.blit(game_surface, (0, 0))
