@@ -1,5 +1,8 @@
 from block import Block
-
+'''
+class Entity:
+    khong khac gi class block
+'''
 class Entity(Block):
     def __init__(self, image, rect, crop):
         super().__init__(image, rect, crop)
