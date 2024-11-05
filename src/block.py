@@ -33,6 +33,8 @@ class Block(pyg.sprite.Sprite):
 
     def changePosition(self, x, y):
         self.rect = pyg.Rect(x, y, self.rect.width, self.rect.height)
+    def changePositionV(self, pos):
+        self.rect = pyg.Rect(pos[0], pos[1], self.rect.width, self.rect.height)
     def changeSize(self, width, height):
         self.rect = pyg.Rect(self.rect.x, self.rect.y, width, height)
         self.img = self.raw_img.subsurface(self.cropTable[self.index])

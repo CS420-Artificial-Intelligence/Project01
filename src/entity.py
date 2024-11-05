@@ -5,5 +5,7 @@ class Entity(Block):
         super().__init__(image, rect, crop)
     def changePosition(self, x, y):
         super().changePosition(x, y)
+    def changePositionV(self, pos):
+        super().changePositionV(pos)
     def draw(self, screen):
         super().draw(screen)

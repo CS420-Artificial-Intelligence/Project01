@@ -51,33 +51,38 @@ class Map:
     def draw(self, screen):
         for i in range(len(self.matrix)):
             for j in range(len(self.matrix[i])):
+                position = (j + self.screenbias[0]) * self.block_size, (i + self.screenbias[1]) * self.block_size
                 if self.matrix[i][j] == "#":
-                    self.wall_block.changePosition ((j + self.screenbias[0]) * self.block_size, (i + self.screenbias[1]) * self.block_size)
+                    self.wall_block.changePositionV(position)
                     self.wall_block.draw(screen)
+
                 if self.matrix[i][j] == ".":
-                    self.switch_block.changePosition ((j + self.screenbias[0]) * self.block_size, (i + self.screenbias[1]) * self.block_size)
+                    self.switch_block.changePositionV(position)
                     self.switch_block.draw(screen)
+
                 if self.matrix[i][j] == "*":
-                    self.switch_block.changePosition ((j + self.screenbias[0]) * self.block_size, (i + self.screenbias[1]) * self.block_size)
+                    self.switch_block.changePositionV(position)
                     self.switch_block.draw(screen)
-                    self.stone_entity.changePosition ((j + self.screenbias[0]) * self.block_size, (i + self.screenbias[1]) * self.block_size)
+                    self.stone_entity.changePositionV(position)
                     self.stone_entity.draw(screen)
+
                 if self.matrix[i][j] == "+":
-                    self.switch_block.changePosition ((j + self.screenbias[0]) * self.block_size, (i + self.screenbias[1]) * self.block_size)
+                    self.switch_block.changePositionV(position)
                     self.switch_block.draw(screen)
-                    self.ares_entity.changePosition ((j + self.screenbias[0]) * self.block_size, (i + self.screenbias[1]) * self.block_size)
+                    self.ares_entity.changePositionV(position)
                     self.ares_entity.draw(screen)
+
                 if self.matrix[i][j] == " ":
-                    self.nonwall_block.changePosition ((j + self.screenbias[0]) * self.block_size, (i + self.screenbias[1]) * self.block_size)
+                    self.nonwall_block.changePositionV(position)
                     self.nonwall_block.draw(screen)
                 if self.matrix[i][j] == "@":
-                    self.nonwall_block.changePosition ((j + self.screenbias[0]) * self.block_size, (i + self.screenbias[1]) * self.block_size)
+                    self.nonwall_block.changePositionV(position)
                     self.nonwall_block.draw(screen)
-                    self.ares_entity.changePosition ((j + self.screenbias[0]) * self.block_size, (i + self.screenbias[1]) * self.block_size)
+                    self.ares_entity.changePositionV(position)
                     self.ares_entity.draw(screen)
                 if self.matrix[i][j] == "$":
-                    self.nonwall_block.changePosition ((j + self.screenbias[0]) * self.block_size, (i + self.screenbias[1]) * self.block_size)
+                    self.nonwall_block.changePositionV(position)
                     self.nonwall_block.draw(screen)
-                    self.stone_entity.changePosition ((j + self.screenbias[0]) * self.block_size, (i + self.screenbias[1]) * self.block_size)
+                    self.stone_entity.changePositionV(position)
                     self.stone_entity.draw(screen)
 

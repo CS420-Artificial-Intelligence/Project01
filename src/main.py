@@ -40,8 +40,21 @@ def game_screen():
         if event.type == pyg.QUIT:
             print("Quit")
             return 0
+        # if i is press, add (1, 0) to the bias 
+        # if k is press, add (-1, 0) to the bias 
+        # if j is press, add (0, -1) to the bias 
+        # if l is press, add (0, 1) to the bias 
         if event.type == pyg.KEYDOWN:
-            # print key 
+            if event.key == 105:
+                map.addBias(1, 0)
+            if event.key == 107:
+                map.addBias(-1, 0)
+            if event.key == 106:
+                map.addBias(0, 1)
+            if event.key == 108:
+                map.addBias(0, -1)
+
+
             if event.key == 61:
                 map.increaseBlockSizes()
             if event.key == 45:
