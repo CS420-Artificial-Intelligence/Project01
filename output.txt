@@ -1,5 +1,5 @@
 Nodes generated: 74209
-Time: 7.182491299987305s
+Time: 7.0112033000041265s
 Memory: 57.78640174865723MB
 Expanded nodes: 36536
 Path: lluRurrDrdLLLuRRRRRRRurD

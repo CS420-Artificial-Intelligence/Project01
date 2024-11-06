@@ -1,4 +1,4 @@
-from map import Map
+from maze import Maze
 from best_first_search.state import State
 from best_first_search.search import Algorithm
 from best_first_search.search_ds import PriorityQueue

@@ -1,4 +1,4 @@
-class Map:
+class Maze:
     def __init__(self, filename = None): 
         self.num_rows = 0
         self.num_cols = 0
@@ -10,7 +10,7 @@ class Map:
             self.load_from_file(filename)
         
     def copy(self):
-        new_map = Map()
+        new_map = Maze()
         new_map.num_rows = self.num_rows
         new_map.num_cols = self.num_cols
         new_map.maze = [row.copy() for row in self.maze]
@@ -128,6 +128,6 @@ class Map:
         sorted_stones = sorted(self.stones)
         return hash((self.ares_position, tuple(sorted_stones)))
 
-    def __eq__(self, other: 'Map'):
+    def __eq__(self, other: 'Maze'):
         return self.ares_position == other.ares_position and self.stones == other.stones
 
