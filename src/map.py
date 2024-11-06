@@ -2,17 +2,10 @@
 import pygame 
 from enum import Enum
 
-# Define Direction Enum
-class Direction(Enum):
-    U = 0
-    L = 1
-    R = 2
-    D = 3
 class Map:
     def __init__(self, filename = None): 
         self.num_rows = 0
         self.num_cols = 0
-        self.cost = 0
         self.maze = []
         self.stones = []
         self.switches = []
@@ -20,6 +13,15 @@ class Map:
         if filename is not None:
             self.load_from_file(filename)
         
+    def copy(self):
+        new_map = Map()
+        new_map.num_rows = self.num_rows
+        new_map.num_cols = self.num_cols
+        new_map.maze = [row.copy() for row in self.maze]
+        new_map.stones = self.stones.copy()
+        new_map.switches = self.switches.copy()
+        new_map.ares_position = self.ares_position
+        return new_map
     def load_from_file(self, filename):
         with open(filename, 'r') as file:
             input_data = file.read()
@@ -45,9 +47,13 @@ class Map:
                     self.switches.append((r, c))
                 elif char == '.':  # Switch
                     self.switches.append((r, c))
+                else:
+                    assert char == ' ' or char == '#', "Invalid character in input file, found " + char
             self.maze.append(row)
         self.num_rows = len(self.maze)
         self.num_cols = len(self.maze[0])
+        self.stones = sorted(self.stones)
+        self.switches = sorted(self.switches)
 
     def is_valid_position(self, r, c, is_stone):
         check_valid = (0 <= r < self.num_rows and 0 <= c < self.num_cols and self.maze[r][c] != '#')
@@ -55,15 +61,10 @@ class Map:
             return check_valid and self.maze[r][c] != '*' and self.maze[r][c] != '$'
         return check_valid
     
-    def move_stone(self, r, c, direction: Direction):
-        if direction == Direction.U:
-            return r - 1, c
-        elif direction == Direction.D:
-            return r + 1, c
-        elif direction == Direction.L:
-            return r, c - 1
-        elif direction == Direction.R:
-            return r, c + 1
+    def move_stone(self, r, c, direction: str):
+        m = {'U': (-1, 0), 'D': (1, 0), 'L': (0, -1), 'R': (0, 1)}
+        new_r, new_c = r + m[direction][0], c + m[direction][1]
+        return new_r, new_c
 
     def get_stone(self, r, c):
         for i, (stone_r, stone_c, _) in enumerate(self.stones):
@@ -96,47 +97,34 @@ class Map:
                 self.maze[new_stone_r][new_stone_c] = '$'
 
     #return 1 if we moved a stone, 0 if we move ares only, -1 if we can't move
-    def apply_move(self, direction: Direction) -> int:
+    def apply_move(self, direction: str) -> tuple[int, int]:
+        m = {'U': (-1, 0), 'D': (1, 0), 'L': (0, -1), 'R': (0, 1)}
         r, c = self.ares_position
-        new_r, new_c = r, c
-        if direction == Direction.U:
-            new_r -= 1
-        elif direction == Direction.D:
-            new_r += 1
-        elif direction == Direction.L:
-            new_c -= 1
-        elif direction == Direction.R:
-            new_c += 1
+        new_r, new_c = r + m[direction][0], c + m[direction][1]
         if not self.is_valid_position(new_r, new_c, False):
-            return -1
+            return [-1, -1]
         stone_index = self.get_stone(new_r, new_c)
         if stone_index is not None:
             weight = self.stones[stone_index][2]
             new_stone_r, new_stone_c = self.move_stone(new_r, new_c, direction)
             if not self.is_valid_position(new_stone_r, new_stone_c, True):
-                return -1
+                return [-1, -1]
             self.stones[stone_index] = (new_stone_r, new_stone_c, weight)   
-            self.cost += weight
+            self.stones = sorted(self.stones)
             self.ares_position = (new_r, new_c)
-            self.cost += 1
             self.update_maze(r, c, new_r, new_c, new_stone_r, new_stone_c)
-            return 1
+            return [1, weight]
         else:
             self.ares_position = (new_r, new_c)
-            self.cost += 1
             self.update_maze(r, c, new_r, new_c, None, None)
-            return 0
-    
-    def get_cost(self):
-        return self.cost
-    
+            return [0, 0]
+        
     def print_map(self):
         for row in self.maze:
             print(''.join(row))
-
     def is_final(self) -> bool:
         for switch in self.switches:
-            if switch not in self.stones:
+            if switch not in [stone[:2] for stone in self.stones]:
                 return False
         return True
     
@@ -144,8 +132,6 @@ class Map:
         sorted_stones = sorted(self.stones)
         return hash((self.ares_position, tuple(sorted_stones)))
 
-    def __eq__(self, other):
-        if isinstance(other, Map):
-            return self.ares_position == other.ares_position and sorted(self.stones) == sorted(other.stones)
-        return False
+    def __eq__(self, other: 'Map'):
+        return self.ares_position == other.ares_position and self.stones == other.stones
 
