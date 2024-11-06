@@ -4,7 +4,7 @@ from best_first_search.search import Algorithm
 from best_first_search.search_ds import PriorityQueue
 
 s = State()
-s.load_from_file('map/input-01.txt')
+s.load_from_file('input/input-01.txt')
 s.map.print_map()
 print(str(s))
 

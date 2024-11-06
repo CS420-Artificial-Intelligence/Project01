@@ -30,7 +30,7 @@ ares_Entity = Entity(ares_img, (0, 0, block_size, block_size), crop_image)
 screen = pyg.display.set_mode(screen_size)
 game_surface = pyg.Surface(game_surface_size)
 running = True
-map = Map("map/input-01.txt", wall_block, nonwall_block, switch_block, stone_Entity, ares_Entity)
+map = Map("input/input-01.txt", wall_block, nonwall_block, switch_block, stone_Entity, ares_Entity)
 map.addBias(0, 2)
 
 
