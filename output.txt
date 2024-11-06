@@ -1,6 +1,6 @@
 Nodes generated: 74209
-Time: 8.195478700014064s
-Memory: 57.77433967590332MB
+Time: 7.182491299987305s
+Memory: 57.78640174865723MB
 Expanded nodes: 36536
 Path: lluRurrDrdLLLuRRRRRRRurD
 Step: 24

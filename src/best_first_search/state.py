@@ -1,7 +1,7 @@
 from map import Map
 class State:
     def __init__(self, map: Map = Map(), number_moved: int = 0, weight_moved: int = 0, parent_state: 'State' = None, input_path: str = None):
-        self.map = map.copy()
+        self.map = map
         self.number_moved = number_moved
         self.weight_moved = weight_moved
         self.parent_state = parent_state
@@ -15,10 +15,9 @@ class State:
         status, cost = new_map.apply_move(action)
         if status == -1:
             return None
-        act = action
         if status == 0:
-            act = act.lower()
-        return State(new_map, self.number_moved + 1, self.weight_moved + cost, self, act)
+            action = action.lower()
+        return State(new_map, self.number_moved + 1, self.weight_moved + cost, self, action)
 
     def g(self) -> int:
         return self.number_moved + self.weight_moved

@@ -1,7 +1,3 @@
-
-import pygame 
-from enum import Enum
-
 class Map:
     def __init__(self, filename = None): 
         self.num_rows = 0
