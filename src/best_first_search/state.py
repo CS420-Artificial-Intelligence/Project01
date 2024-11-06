@@ -11,6 +11,7 @@ class State:
         self.map.load_from_file(input_path)
 
     def apply_action(self, action: str) -> 'State':
+        action = action.upper()
         new_map = self.map.copy()
         status, cost = new_map.apply_move(action)
         if status == -1:
