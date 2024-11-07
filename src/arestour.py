@@ -3,6 +3,7 @@ from block import Block
 from entity import Entity
 from map import Map
 
+from selectbox import selectBox
 
 class AresTour: 
     def __init__(self):
@@ -33,11 +34,15 @@ class AresTour:
         self.running = True
         self.map = Map("input/input-01.txt", self.wall_block, self.nonwall_block, self.switch_block, self.stone_Entity, self.ares_Entity)
 
+        self.config_level_select = selectBox(pyg.Rect(0, 0, 300, 60))
+
     def statusline_screen(self):
         self.statusline_surface.fill((125, 125, 255))
         return
     def config_screen(self):
         self.config_surface.fill((255, 125, 125))
+        self.config_level_select.draw(self.config_surface)
+        
         return
     def game_screen(self): 
         self.game_surface.fill((255, 255, 255))
