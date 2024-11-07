@@ -1,4 +1,4 @@
-import best_first_search.search_ds.search_ds as search_ds
+import algorithm.search_ds.search_ds as search_ds
 
 class Queue(search_ds.SearchDataStructure):
     def __init__(self):

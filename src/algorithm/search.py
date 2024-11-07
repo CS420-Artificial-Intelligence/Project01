@@ -1,5 +1,5 @@
-from best_first_search.search_ds.search_ds import SearchDataStructure
-from best_first_search.state import State
+from algorithm.search_ds.search_ds import SearchDataStructure
+from algorithm.state import State
 import timeit
 import tracemalloc
 

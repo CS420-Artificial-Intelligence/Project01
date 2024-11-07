@@ -1,8 +1,8 @@
 from maze import Maze
-from best_first_search.state import State
-from best_first_search.search import Algorithm
-from best_first_search.search_ds import PriorityQueue
-from best_first_search import ucs, bfs, dfs, a_star
+from algorithm.state import State
+from algorithm.search import Algorithm
+from algorithm.search_ds import PriorityQueue
+from algorithm import ucs, bfs, dfs, a_star
 from save_stats import save_stats
 import os
 
