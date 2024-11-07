@@ -30,10 +30,10 @@ class Maze:
             for c, char in enumerate(line):
                 row.append(char)
                 if char == '$':  # Stone
-                    self.stones.append((r, c, stone_weights[stone_index]))
+                    self.stones.append((r, c, stone_weights[stone_index], stone_index))
                     stone_index += 1
                 elif char == '*':  # Stone on switch
-                    self.stones.append((r, c, stone_weights[stone_index]))
+                    self.stones.append((r, c, stone_weights[stone_index], stone_index))
                     self.switches.append((r, c))
                     stone_index += 1
                 elif char == '@': # Ares
@@ -63,7 +63,7 @@ class Maze:
         return new_r, new_c
 
     def get_stone(self, r, c):
-        for i, (stone_r, stone_c, _) in enumerate(self.stones):
+        for i, (stone_r, stone_c, _, _) in enumerate(self.stones):
             if stone_r == r and stone_c == c:
                 return i
         return None
@@ -102,10 +102,11 @@ class Maze:
         stone_index = self.get_stone(new_r, new_c)
         if stone_index is not None:
             weight = self.stones[stone_index][2]
+            oldindex = self.stones[stone_index][3]
             new_stone_r, new_stone_c = self.move_stone(new_r, new_c, direction)
             if not self.is_valid_position(new_stone_r, new_stone_c, True):
                 return [-1, -1]
-            self.stones[stone_index] = (new_stone_r, new_stone_c, weight)   
+            self.stones[stone_index] = (new_stone_r, new_stone_c, weight, oldindex)
             self.stones = sorted(self.stones)
             self.ares_position = (new_r, new_c)
             self.update_maze(r, c, new_r, new_c, new_stone_r, new_stone_c)

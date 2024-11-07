@@ -26,7 +26,7 @@ ares_img = pyg.image.load("assets/ares.png")
 ares_Entity = Entity(ares_img, (0, 0, block_size, block_size), crop_image)
 
 
-
+pyg.init()
 screen = pyg.display.set_mode(screen_size)
 game_surface = pyg.Surface(game_surface_size)
 running = True
@@ -59,6 +59,15 @@ def game_screen():
                 map.increaseBlockSizes()
             if event.key == 45:
                 map.decreaseBlockSizes()
+            
+            if event.key == 97: 
+                map.maze.apply_move('L')
+            if event.key == 100:
+                map.maze.apply_move('R')
+            if event.key == 119:
+                map.maze.apply_move('U')
+            if event.key == 115:
+                map.maze.apply_move('D')
 
     game_surface.fill((255, 255, 255))
     map.draw(game_surface)
