@@ -4,6 +4,7 @@ from entity import Entity
 from map import Map
 
 from selectbox import selectBox
+from algochoose import algoChoose
 
 class AresTour: 
     def __init__(self):
@@ -35,53 +36,64 @@ class AresTour:
         self.map = Map("input/input-01.txt", self.wall_block, self.nonwall_block, self.switch_block, self.stone_Entity, self.ares_Entity)
 
         self.config_level_select = selectBox(pyg.Rect(0, 0, 300, 60))
+        self.algochoose = algoChoose(pyg.Rect(0, 80, 300, 120))
 
-    def statusline_screen(self):
+
+    def statusline_screen_draw(self):
         self.statusline_surface.fill((125, 125, 255))
         return
-    def config_screen(self):
+    def statusline_screen_event_handler(self, event):
+        return 
+
+    def config_screen_draw(self):
         self.config_surface.fill((255, 125, 125))
         self.config_level_select.draw(self.config_surface)
+        self.algochoose.draw(self.config_surface)
+        return
+    def config_screen_event_handler(self, event):
         
         return
-    def game_screen(self): 
+
+    def game_screen_draw(self): 
         self.game_surface.fill((255, 255, 255))
         self.map.draw(self.game_surface)
+
+    def game_screen_event_handler(self, event):
+        if event.type == pyg.KEYDOWN:
+            if event.key == 105:
+                self.map.addBias(1, 0)
+            if event.key == 107:
+                self.map.addBias(-1, 0)
+            if event.key == 106:
+                self.map.addBias(0, 1)
+            if event.key == 108:
+                self.map.addBias(0, -1)
+            if event.key == 61:
+                self.map.increaseBlockSizes()
+            if event.key == 45:
+                self.map.decreaseBlockSizes()
+            if event.key == 114:
+                self.map.explain("dfs")
+        self.map.continueExplain()
+
+        return
+    
     def event_handler(self): 
         for event in pyg.event.get():
             if event.type == pyg.QUIT:
                 self.running = False
                 return
-            # if i is press, add (1, 0) to the bias 
-            # if k is press, add (-1, 0) to the bias 
-            # if j is press, add (0, -1) to the bias 
-            # if l is press, add (0, 1) to the bias 
-            if event.type == pyg.KEYDOWN:
-            # if ctrl j is press 
-                if event.key == 106 and event.mod == 64:
-                    self.running = False 
-                    return 
-                if event.key == 105:
-                    self.map.addBias(1, 0)
-                if event.key == 107:
-                    self.map.addBias(-1, 0)
-                if event.key == 106:
-                    self.map.addBias(0, 1)
-                if event.key == 108:
-                    self.map.addBias(0, -1)
-                if event.key == 61:
-                    self.map.increaseBlockSizes()
-                if event.key == 45:
-                    self.map.decreaseBlockSizes()
-                if event.key == 114:
-                    self.map.explain("dfs")
+            self.game_screen_event_handler(event)
+            self.config_screen_event_handler(event)
+            self.statusline_screen_event_handler(event)
+
         self.map.continueExplain()
         return 
     def draw(self):
         
-        self.statusline_screen()
-        self.config_screen()
-        self.game_screen()
+        self.statusline_screen_draw()
+        self.config_screen_draw()
+        self.game_screen_draw()
 
         self.screen.blit(self.game_surface, (0, 0))
         self.screen.blit(self.statusline_surface, (0, 660))
