@@ -10,3 +10,4 @@ class AStarState(State):
 class AStarAlgorithm(Algorithm):
     def __init__(self, initial_state: AStarState):
         super().__init__(Queue(), initial_state)
+        self.algorithm_name = 'A*'
