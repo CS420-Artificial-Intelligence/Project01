@@ -11,7 +11,6 @@ class State:
         self.map.load_from_file(input_path)
 
     def apply_action(self, action: str) -> 'State':
-        action = action.upper()
         new_map = self.map.copy()
         status, cost = new_map.apply_move(action)
         if status == -1:
@@ -26,7 +25,6 @@ class State:
         # heuristic
         sorted_stones_weight = sorted(self.map.stones, key=lambda x: x[2], reverse=True)
         tmp_switches = self.map.switches
-        print(sorted_stones_weight)
         sum_h = 0
         for i, (r, c, _, _) in enumerate(sorted_stones_weight):
             max_dis = (0, 0)
