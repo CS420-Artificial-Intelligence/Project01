@@ -60,14 +60,19 @@ def game_screen():
             if event.key == 45:
                 map.decreaseBlockSizes()
             
-            if event.key == 97: 
-                map.maze.apply_move('L')
-            if event.key == 100:
-                map.maze.apply_move('R')
-            if event.key == 119:
-                map.maze.apply_move('U')
-            if event.key == 115:
-                map.maze.apply_move('D')
+#            if event.key == 97: 
+#                map.maze.apply_move('L')
+#            if event.key == 100:
+#                map.maze.apply_move('R')
+#            if event.key == 119:
+#                map.maze.apply_move('U')
+#            if event.key == 115:
+#                map.maze.apply_move('D')
+            # if press r 
+            if event.key == 114:
+                map.explain("dfs")
+
+    map.continueExplain()
 
     game_surface.fill((255, 255, 255))
     map.draw(game_surface)

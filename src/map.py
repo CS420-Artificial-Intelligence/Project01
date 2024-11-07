@@ -1,3 +1,11 @@
+
+import time 
+
+from algorithm.state import State
+from algorithm.search import Algorithm
+from algorithm.search_ds import PriorityQueue
+from algorithm import ucs, bfs, dfs, a_star
+
 import pygame as pyg 
 
 from block import Block
@@ -67,18 +75,90 @@ class Map:
         self.filename = filename
         
         self.maze = Maze(self.filename)
+        self.inexplainmode = False
+        self.last_move = time.time()
+        self.duration = 0.5 
 
         self.fontpath = "assets/Noto_Sans_Mono/NotoSansMono-VariableFont_wdth,wght.ttf"
         self.fontsize = 35
         self.font = pyg.font.Font(self.fontpath, self.fontsize)
         self.textlist = []
         self.stoneslist = self.maze.stones 
+        self.solution = []
 
         WHITE = (255, 255, 255)
 
         for stone in self.stoneslist:
             self.textlist.append(self.font.render(str(stone[2]), True, WHITE))
         return
+    def run_ucs(self):
+        state = State(self.maze)
+        ucs_engine = ucs.UCSAlgorithm(state) 
+        ucs_engine.run()
+        str = ucs_engine.stats_json()['solution'] 
+        
+        # for loop from end to begin 
+        for i in range(len(str) - 1, -1, -1):
+            self.solution.append(str[i])
+
+    def run_dfs(self):
+        state = State(self.maze)
+        dfs_engine = dfs.DFSAlgorithm(state)
+        dfs_engine.run()
+        str = dfs_engine.stats_json()['solution']
+        
+        for i in range(len(str) - 1, -1, -1):
+            self.solution.append(str[i]) 
+
+    def run_bfs(self):
+        state = State(self.maze)
+        bfs_engine = bfs.BFSAlgorithm(state)
+        bfs_engine.run()
+        str = bfs_engine.stats_json()['solution']
+
+        for i in range(len(str) - 1, -1, -1):
+            self.solution.append(str[i])
+        
+
+    def run_a_star(self):
+        state = State(self.maze)
+        a_star_engine = a_star.AStarAlgorithm(state)
+        a_star_engine.run()
+        
+        str = a_star_engine.stats_json()['solution']
+
+        for i in range(len(str) - 1, -1, -1):
+            self.solution.append(str[i])
+    
+    def isInExplainMode(self):
+        return self.inexplainmode
+    
+    def explain(self, str):
+        self.inexplainmode = True
+        self.last_move = time.time() 
+        self.solution = []
+        if str == "ucs":
+            self.run_ucs()
+        if str == "dfs":
+            self.run_dfs()
+        if str == "bfs":
+            self.run_bfs()
+        if str == "a_star":
+            self.run_a_star()
+
+    
+    def continueExplain(self):
+        if self.inexplainmode == False:
+            return 
+        if len(self.solution) == 0:
+            self.inexplainmode = False
+            return 
+        if time.time() - self.last_move < self.duration:
+            return 
+        chr = self.solution.pop() 
+        self.maze.apply_move(chr)
+        self.last_move = time.time()
+
 
     def setBlockSizes(self, block_size):
         self.block_size = block_size
@@ -159,7 +239,6 @@ class Map:
             hw = 0
             hh = 0
             position = (stone[1] + self.screenbias[0]) * self.block_size + hw, hh + (stone[0] + self.screenbias[1]) * self.block_size
-            print(stone[3])
             screen.blit(self.textlist[stone[3]], position)
 
 
