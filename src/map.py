@@ -1,5 +1,8 @@
 import pygame as pyg 
+
 from block import Block
+from maze import Maze
+
 
 '''
 
@@ -63,21 +66,18 @@ class Map:
         self.ares_entity = ares_entity
         self.filename = filename
         
-        self.ares_position = [-1, -1]
+        self.maze = Maze(self.filename)
 
-        with open(filename, "r") as file:
-            self.rockValue = list(map(int, file.readline().split()))
-            self.matrix = [list(line) for line in file]
-        for i in range(len(self.matrix)):
-            if self.ares_position != [-1, -1]: 
-                break
-            for j in range(len(self.matrix[i])):
-                if self.matrix[i][j] == "+":
-                    self.ares_position = [i, j] 
-                    break 
-                if self.matrix[i][j] == "@":
-                    self.ares_position = [i, j] 
-                    break
+        self.fontpath = "assets/Noto_Sans_Mono/NotoSansMono-VariableFont_wdth,wght.ttf"
+        self.fontsize = 35
+        self.font = pyg.font.Font(self.fontpath, self.fontsize)
+        self.textlist = []
+        self.stoneslist = self.maze.stones 
+
+        WHITE = (255, 255, 255)
+
+        for stone in self.stoneslist:
+            self.textlist.append(self.font.render(str(stone[2]), True, WHITE))
         return
 
     def setBlockSizes(self, block_size):
@@ -95,6 +95,11 @@ class Map:
         self.switch_block.changeSize(self.block_size, self.block_size)
         self.stone_entity.changeSize(self.block_size, self.block_size)
         self.ares_entity.changeSize(self.block_size, self.block_size)
+        
+        self.fontsize += 5 
+        for stone in self.stoneslist:
+            self.textlist.append(self.font.render(str(stone[2]), True, (255, 255, 255)))
+
     def decreaseBlockSizes(self):
         self.block_size -= 5
         self.wall_block.changeSize(self.block_size, self.block_size)
@@ -103,22 +108,15 @@ class Map:
         self.stone_entity.changeSize(self.block_size, self.block_size)
         self.ares_entity.changeSize(self.block_size, self.block_size)
 
-    def isValidMove(self, delta): 
-        pass 
-    def movingAres(self, delta):
-        pass 
+        self.fontsize -= 5 
+        for stone in self.stoneslist:
+            self.textlist.append(self.font.render(str(stone[2]), True, (255, 255, 255)))
+
     def addBias(self, x, y):
-        self.screenbias[1] -= x
-        self.screenbias[0] -= y
-    def loadmap(self, filename): 
-        self.filename = filename
-        with open(filename, "r") as file:
-            self.rockValue = list(map(int, file.readline().split()))
-            self.matrix = [list(line) for line in file]
-    def print(self):
-        print(self.rockValue)
-        print(self.matrix)
+        self.screenbias[1] += x
+        self.screenbias[0] += y
     def draw(self, screen):
+        self.matrix = self.maze.maze
         for i in range(len(self.matrix)):
             for j in range(len(self.matrix[i])):
                 position = (j + self.screenbias[0]) * self.block_size, (i + self.screenbias[1]) * self.block_size
@@ -155,4 +153,13 @@ class Map:
                     self.nonwall_block.draw(screen)
                     self.stone_entity.changePositionV(position)
                     self.stone_entity.draw(screen)
+        stoneslist = self.maze.stones
+        for i in range(len(stoneslist)): 
+            stone = stoneslist[i]
+            hw = 0
+            hh = 0
+            position = (stone[1] + self.screenbias[0]) * self.block_size + hw, hh + (stone[0] + self.screenbias[1]) * self.block_size
+            print(stone[3])
+            screen.blit(self.textlist[stone[3]], position)
+
 
