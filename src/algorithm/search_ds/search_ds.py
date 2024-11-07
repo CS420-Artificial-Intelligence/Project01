@@ -1,4 +1,4 @@
-import best_first_search.state as state
+import algorithm.state as state
 class SearchDataStructure:
     def __init__(self):
         pass

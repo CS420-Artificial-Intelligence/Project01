@@ -1,5 +1,5 @@
-from best_first_search.search_ds.search_ds import SearchDataStructure
-from best_first_search.state import State
+from algorithm.search_ds.search_ds import SearchDataStructure
+from algorithm.state import State
 import timeit
 import tracemalloc
 
@@ -16,6 +16,7 @@ class Algorithm:
         self.time = 0
         self.memory = 0
         self.goal_state = None
+        self.algorithm_name = 'Best First Search'
 
     def expand(self, state: State):
         return state.expand()
@@ -38,14 +39,12 @@ class Algorithm:
                         return state
                     if state not in self.expanded:
                         if state not in self.reached or state.f() < self.reached[state]:
-                            if state not in self.reached:
-                                self.nodes_generated += 1
                             self.reached[state] = state.f()
                             self.search_ds.push(state)
             self.goal_state = None
             return None
         finally:
-            self.nodes_generated += len(self.reached)
+            self.nodes_generated = len(self.reached)
             self.time = timeit.default_timer() - start_time
             self.memory = tracemalloc.get_traced_memory()[1] / 1024 / 1024
             tracemalloc.stop()
@@ -65,6 +64,17 @@ class Algorithm:
         action = ''.join(action[::-1])
 
         return action, steps, weight, tot_cost
+
+    def stats_json(self):
+        return {
+            'strategy': self.algorithm_name,
+            'steps': self.goal_state.number_moved,
+            'weight': self.goal_state.number_moved + self.goal_state.weight_moved,
+            'node': self.nodes_generated,
+            'time(ms)': self.time * 1000,
+            'memory(MB)': self.memory,
+            'solution': self.trace(self.goal_state)[0],
+        }
     def print_stats(self, file_name: str):
         with open(file_name, 'w') as f:
             f.write(f'Nodes generated: {self.nodes_generated}\n')

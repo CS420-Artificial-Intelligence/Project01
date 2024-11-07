@@ -93,6 +93,7 @@ class Maze:
 
     #return 1 if we moved a stone, 0 if we move ares only, -1 if we can't move
     def apply_move(self, direction: str) -> tuple[int, int]:
+        direction = direction.upper()
         m = {'U': (-1, 0), 'D': (1, 0), 'L': (0, -1), 'R': (0, 1)}
         r, c = self.ares_position
         new_r, new_c = r + m[direction][0], c + m[direction][1]

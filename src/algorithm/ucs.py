@@ -1,6 +1,6 @@
-from best_first_search.search import Algorithm
-from best_first_search.state import State
-from best_first_search.search_ds import PriorityQueue
+from algorithm.search import Algorithm
+from algorithm.state import State
+from algorithm.search_ds import PriorityQueue
 
 
 class UCSState(State):
@@ -10,3 +10,4 @@ class UCSState(State):
 class UCSAlgorithm(Algorithm):
     def __init__(self, initial_state: UCSState):
         super().__init__(PriorityQueue(), initial_state)
+        self.algorithm_name = 'UCS'

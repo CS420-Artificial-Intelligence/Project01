@@ -1,5 +1,5 @@
-import best_first_search.search_ds.search_ds as search_ds
-import best_first_search.state as state
+import algorithm.search_ds.search_ds as search_ds
+import algorithm.state as state
 
 class PriorityQueue(search_ds.SearchDataStructure):
     def __init__(self):
