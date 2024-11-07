@@ -10,3 +10,4 @@ class UCSState(State):
 class UCSAlgorithm(Algorithm):
     def __init__(self, initial_state: UCSState):
         super().__init__(PriorityQueue(), initial_state)
+        self.algorithm_name = 'UCS'

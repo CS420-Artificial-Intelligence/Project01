@@ -10,3 +10,4 @@ class DFSState(State):
 class DFSAlgorithm(Algorithm):
     def __init__(self, initial_state: DFSState):
         super().__init__(Stack(), initial_state)
+        self.algorithm_name = 'DFS'

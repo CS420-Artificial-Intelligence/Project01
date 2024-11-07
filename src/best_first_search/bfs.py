@@ -10,3 +10,4 @@ class BFSState(State):
 class BFSAlgorithm(Algorithm):
     def __init__(self, initial_state: BFSState):
         super().__init__(Queue(), initial_state)
+        self.algorithm_name = 'BFS'
