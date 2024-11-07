@@ -24,7 +24,17 @@ class State:
         return self.number_moved + self.weight_moved
     def h(self) -> int:
         # heuristic
-        pass
+        sorted_stones_weight = sorted(self.map.stones, key=lambda x: x[2], reverse=True)
+        tmp_switches = self.map.switches
+        print(sorted_stones_weight)
+        sum_h = 0
+        for i, (r, c, _, _) in enumerate(sorted_stones_weight):
+            max_dis = (0, 0)
+            for j, (r_switch,c_switch) in enumerate(tmp_switches):
+                max_dis = max(max_dis, (abs(r - r_switch) + abs(c - c_switch), j))
+            sum_h += max_dis[0]
+            tmp_switches.pop(max_dis[1])
+        return sum_h
     def f(self) -> int:
         # base on a specific algorithm
         return self.g()

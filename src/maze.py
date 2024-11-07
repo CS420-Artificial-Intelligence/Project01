@@ -49,7 +49,6 @@ class Maze:
         self.num_rows = len(self.maze)
         self.num_cols = len(self.maze[0])
         self.stones = sorted(self.stones)
-        self.switches = sorted(self.switches)
 
     def is_valid_position(self, r, c, is_stone):
         check_valid = (0 <= r < self.num_rows and 0 <= c < self.num_cols and self.maze[r][c] != '#')
@@ -126,8 +125,8 @@ class Maze:
         return True
     
     def __hash__(self):
-        sorted_stones = sorted(self.stones)
-        return hash((self.ares_position, tuple(sorted_stones)))
+        #sorted_stones = sorted(self.stones)
+        return hash((self.ares_position, tuple(self.stones)))
 
     def __eq__(self, other: 'Maze'):
         return self.ares_position == other.ares_position and self.stones == other.stones

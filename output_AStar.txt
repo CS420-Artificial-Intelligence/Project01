@@ -1,0 +1,8 @@
+Nodes generated: 30705
+Time: 1.717293800029438s
+Memory: 23.431396484375MB
+Expanded nodes: 12013
+Path: uLulDrrRRRRRRurD
+Step: 16
+Weight: 205
+Total cost: 221
