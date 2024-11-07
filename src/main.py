@@ -12,7 +12,9 @@ from map import Map
 block_size = 80
 crop_image = (0, 0, -1, -1)
 screen_size = (1200, 720)
-game_surface_size = (700, 500)
+game_surface_size = (900, 660)
+statusline_surface_size = (900, 60)
+config_surface_size = (300, 720)
 
 wall_img = pyg.image.load("assets/wall.png")
 wall_block = Block(wall_img, (0, 0, block_size, block_size), crop_image)
@@ -29,11 +31,21 @@ ares_Entity = Entity(ares_img, (0, 0, block_size, block_size), crop_image)
 pyg.init()
 screen = pyg.display.set_mode(screen_size)
 game_surface = pyg.Surface(game_surface_size)
+statusline_surface = pyg.Surface(statusline_surface_size)
+config_surface = pyg.Surface(config_surface_size)
 running = True
 map = Map("input/input-01.txt", wall_block, nonwall_block, switch_block, stone_Entity, ares_Entity)
 map.addBias(0, 2)
 
+def statusline_screen():
+    game_surface.fill((255, 255, 125))
+    screen.blit(game_surface, (0, 660))
+    return 
 
+def config_screen():
+    config_surface.fill((255, 125, 125))
+    screen.blit(config_surface, (900, 0))
+    return 
 
 def game_screen():
     for event in pyg.event.get():
@@ -77,6 +89,8 @@ def game_screen():
     game_surface.fill((255, 255, 255))
     map.draw(game_surface)
     screen.blit(game_surface, (0, 0))
+    statusline_screen()
+    config_screen()
     pyg.display.flip()
     return 1
 
