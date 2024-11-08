@@ -2,6 +2,7 @@ import pygame as pyg
 from block import Block
 from entity import Entity
 from map import Map
+import menu
 
 
 #img = pyg.image.load("assets/rock.jpeg")
@@ -35,7 +36,7 @@ map.addBias(0, 2)
 
 
 
-def game_screen():
+def game_screen(map_idx: int):
     for event in pyg.event.get():
         if event.type == pyg.QUIT:
             print("Quit")
@@ -71,6 +72,9 @@ def game_screen():
             # if press r 
             if event.key == 114:
                 map.explain("dfs")
+            # if press esc
+            if event.key == 27:
+                return 0
 
     map.continueExplain()
 
@@ -80,6 +84,33 @@ def game_screen():
     pyg.display.flip()
     return 1
 
-while running != 0:
-    running = game_screen()
-    pyg.time.delay(100)
+
+def game_screen_loop(map_idx: int):
+    running = 1
+    while running != 0:
+        running = game_screen(map_idx)
+        pyg.time.delay(100)
+    return 1
+
+
+def main():
+    running = True
+    current_screen = 'MENU'
+    current_map = 0
+    while running:
+        if current_screen == 'MENU':
+            status = menu.run_menu(screen)
+            if status == -1:
+                running = False
+            else:
+                current_screen = 'GAME'
+                current_map = status
+        else:
+            running = game_screen_loop(current_map)
+            current_screen = 'MENU'
+
+
+if __name__ == '__main__':
+    main()
+    pyg.quit()
+
