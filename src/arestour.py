@@ -7,6 +7,7 @@ from selectbox import selectBox
 from algochoose import algoChoose
 from speed_button import speedButton
 from step_button import stepButton
+from statusline import statusLine
 
 class AresTour: 
     def __init__(self):
@@ -41,10 +42,13 @@ class AresTour:
         self.algochoose = algoChoose(pyg.Rect(0, 70, 300, 60))
         self.speedbutton = speedButton(pyg.Rect(0, 150, 300, 60))
         self.stepbutton = stepButton(pyg.Rect(0, 220, 300, 60))
+        
+        inf = [["Score", "999"], ["Moving", "20"], ["Time", "20s"]]
+        self.statusline = statusLine(pyg.Rect(0, 0, 900, 60), inf)
 
 
     def statusline_screen_draw(self):
-        self.statusline_surface.fill((125, 125, 255))
+        self.statusline.draw(self.statusline_surface)
         return
     def statusline_screen_event_handler(self, event):
         return 
