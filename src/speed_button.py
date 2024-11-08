@@ -44,8 +44,7 @@ class speedButton:
     def event_handler(self, event):
         return 
     def draw(self, screen):
-        # fill with yellow 
-        screen.fill((255, 255, 0), self.rect)
+        screen.fill((125, 125, 255), self.rect)
         self.slowndown.draw(screen)
         self.pause.draw(screen)
         self.speedup.draw(screen)
