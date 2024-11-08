@@ -55,13 +55,14 @@ class AresTour:
 
     def config_screen_draw(self):
         self.config_surface.fill((255, 125, 125))
-        self.algochoose.draw(self.config_surface)
         self.speedbutton.draw(self.config_surface)
         self.stepbutton.draw(self.config_surface)
+        self.algochoose.draw(self.config_surface)
         self.config_level_select.draw(self.config_surface)
         return
     def config_screen_event_handler(self, event):
         self.config_level_select.event_handler(event)
+        self.algochoose.event_handler(event)
         return
 
     def game_screen_draw(self): 
