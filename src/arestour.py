@@ -61,8 +61,21 @@ class AresTour:
         self.config_level_select.draw(self.config_surface)
         return
     def config_screen_event_handler(self, event):
-        self.config_level_select.event_handler(event)
-        self.algochoose.event_handler(event)
+        value1 = self.config_level_select.event_handler(event)
+        value2 = self.algochoose.event_handler(event)
+
+        if value1 is not None:
+            print(value1)
+            self.map.loadMap(f"input/input-0{value1}.txt")
+        if value2 is not None: 
+            if value2 == 1: 
+                self.map.explain("ucs")
+            if value2 == 2:
+                self.map.explain("ffs")
+            if value2 == 3:
+                self.map.explain("bfs")
+            if value2 == 4:
+                self.map.explain("a_star")
         return
 
     def game_screen_draw(self): 

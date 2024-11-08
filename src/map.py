@@ -91,6 +91,14 @@ class Map:
         for stone in self.stoneslist:
             self.textlist.append(self.font.render(str(stone[2]), True, WHITE))
         return
+    def loadMap(self, filename):
+        self.filename = filename
+        self.maze = Maze(self.filename)
+        self.stoneslist = self.maze.stones
+        self.textlist = []
+        for stone in self.stoneslist:
+            self.textlist.append(self.font.render(str(stone[2]), True, (255, 255, 255)))
+        return
     def run_ucs(self):
         state = State(self.maze)
         ucs_engine = ucs.UCSAlgorithm(state) 

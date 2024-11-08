@@ -39,7 +39,7 @@ class Option:
             mouse_pos = (mouse_pos[0] - 900, mouse_pos[1])
             if self.x <= mouse_pos[0] <= self.x + self.width and self.y <= mouse_pos[1] <= self.y + self.height:
                 if self.on_click is not None:
-                    self.on_click()
+                    return self.on_click()
         return
 class selectBox: 
 
@@ -113,6 +113,7 @@ class selectBox:
         self.current_option = index - 1
         self.option_buttons[self.current_option].select()
         self.update_level_value()
+        return index
     
     def event_handler(self, event):
         if event.type == pyg.MOUSEBUTTONDOWN:
@@ -124,7 +125,9 @@ class selectBox:
         if self.is_open == True:
             for i, option in enumerate(self.option_buttons):
                 option.y = self.rect.y + self.rect.height + i * 50
-                option.event_handler(event)
+                value = option.event_handler(event)
+                if value is not None:
+                    return value
         return
 
     def draw(self, screen):
