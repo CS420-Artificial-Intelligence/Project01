@@ -91,6 +91,13 @@ class Map:
         for stone in self.stoneslist:
             self.textlist.append(self.font.render(str(stone[2]), True, WHITE))
         return
+
+    def return_num_col(self):
+        return self.maze.num_cols
+
+    def return_num_row(self):
+        return self.maze.num_rows
+
     def run_ucs(self):
         state = State(self.maze)
         ucs_engine = ucs.UCSAlgorithm(state) 
@@ -201,6 +208,8 @@ class Map:
             for j in range(len(self.matrix[i])):
                 position = (j + self.screenbias[0]) * self.block_size, (i + self.screenbias[1]) * self.block_size
                 if self.matrix[i][j] == "#":
+                    self.nonwall_block.changePositionV(position)
+                    self.nonwall_block.draw(screen)
                     self.wall_block.changePositionV(position)
                     self.wall_block.draw(screen)
 
@@ -223,11 +232,13 @@ class Map:
                 if self.matrix[i][j] == " ":
                     self.nonwall_block.changePositionV(position)
                     self.nonwall_block.draw(screen)
+
                 if self.matrix[i][j] == "@":
                     self.nonwall_block.changePositionV(position)
                     self.nonwall_block.draw(screen)
                     self.ares_entity.changePositionV(position)
                     self.ares_entity.draw(screen)
+
                 if self.matrix[i][j] == "$":
                     self.nonwall_block.changePositionV(position)
                     self.nonwall_block.draw(screen)
