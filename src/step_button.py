@@ -28,19 +28,35 @@ class stepButton:
         self.speedup_rect = pyg.Rect(total_button_position[0], total_button_position[1], self.button_size, self.button_size)
 
         self.slowndown = Button("assets/step_button/backstep.jpg", 
-                           "assets/step_button/backstep.jpg",
+                           "assets/step_button/backstep_hover.jpg",
                            self.slowdown_rect)
         self.pause = Button("assets/step_button/again.jpg",
-                       "assets/step_button/again.jpg",
+                       "assets/step_button/again_hover.jpg",
                        self.pause_rect)
         self.speedup = Button("assets/step_button/nextstep.jpg",
-                         "assets/step_button/nextstep.jpg",
+                         "assets/step_button/nextstep_hover.jpg",
                          self.speedup_rect)
         self.rect = rect
 
         return 
     def event_handler(self, event):
-        return 
+        if event.type == pyg.MOUSEBUTTONDOWN:
+            mouse_pos = event.pos
+            mouse_pos = (mouse_pos[0] - 900, mouse_pos[1])
+            if self.slowdown_rect.collidepoint(mouse_pos):
+                return 0 
+            if self.pause_rect.collidepoint(mouse_pos):
+                return 1
+            if self.speedup_rect.collidepoint(mouse_pos):
+                return 2
+        if event.type == pyg.MOUSEMOTION:
+            mouse_pos = event.pos
+            mouse_pos = (mouse_pos[0] - 900, mouse_pos[1])
+            self.slowndown.mousemove(mouse_pos)
+            self.pause.mousemove(mouse_pos)
+            self.speedup.mousemove(mouse_pos)
+        return
+        
     def draw(self, screen):
         screen.fill((125, 125, 255), self.rect)
         self.slowndown.draw(screen)

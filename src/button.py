@@ -15,7 +15,7 @@ class Button:
         self.is_hover = self.rect.collidepoint(pos)
         return
     def draw(self, screen):
-        if self.is_hover:
+        if self.is_hover == False:
             self.img1.draw(screen)
         else:
             self.img2.draw(screen)

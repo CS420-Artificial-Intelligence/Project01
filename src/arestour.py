@@ -1,3 +1,4 @@
+import time
 import pygame as pyg 
 from block import Block
 from entity import Entity
@@ -63,6 +64,8 @@ class AresTour:
     def config_screen_event_handler(self, event):
         value1 = self.config_level_select.event_handler(event)
         value2 = self.algochoose.event_handler(event)
+        value3 = self.speedbutton.event_handler(event)
+        value4 = self.stepbutton.event_handler(event)
 
         if value1 is not None:
             print(value1)
@@ -71,11 +74,28 @@ class AresTour:
             if value2 == 1: 
                 self.map.explain("ucs")
             if value2 == 2:
-                self.map.explain("ffs")
+                self.map.explain("dfs")
             if value2 == 3:
                 self.map.explain("bfs")
             if value2 == 4:
                 self.map.explain("a_star")
+                time.sleep(1)
+        if value3 is not None:
+            if value3 == 0:
+                self.map.duration = max(0.1, self.map.duration * 1.2)
+            if value3 == 1: 
+                pass 
+            if value3 == 2: 
+                pass 
+            if value3 == 3:
+                self.map.duration = min(3, self.map.duration / 1.2)
+        if value4 is not None:
+            if value4 == 0:
+                self.map.explainPrev()
+            if value4 == 1: 
+                self.map.loadMap(self.map.filename)
+            if value4 == 2: 
+                self.map.explainNext()
         return
 
     def game_screen_draw(self): 

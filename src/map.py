@@ -167,6 +167,18 @@ class Map:
         self.maze.apply_move(chr)
         self.last_move = time.time()
 
+    def explainNext(self): 
+        if len(self.solution) == 0:
+            self.inexplainmode = False
+            return 
+        if time.time() - self.last_move < 0.1:
+            return
+        chr = self.solution.pop() 
+        self.maze.apply_move(chr)
+        self.last_move = time.time()
+    def explainPrev(self): 
+        print("Not implemented yet: Map.explainPrev()")
+        pass 
 
     def setBlockSizes(self, block_size):
         self.block_size = block_size
