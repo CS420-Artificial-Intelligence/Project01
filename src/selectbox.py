@@ -108,7 +108,7 @@ class selectBox:
         self.option_buttons.append(Option(option[0], 0, 0, 300, 50, lambda: self.changeOption(option[1])))
         return
     def changeOption(self, index):
-        print(f'Change option to {index}')
+#        print(f'Change option to {index}')
         self.option_buttons[self.current_option].deselect()
         self.current_option = index - 1
         self.option_buttons[self.current_option].select()
