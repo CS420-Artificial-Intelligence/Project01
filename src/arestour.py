@@ -5,6 +5,8 @@ from map import Map
 
 from selectbox import selectBox
 from algochoose import algoChoose
+from speed_button import speedButton
+from step_button import stepButton
 
 class AresTour: 
     def __init__(self):
@@ -36,7 +38,9 @@ class AresTour:
         self.map = Map("input/input-01.txt", self.wall_block, self.nonwall_block, self.switch_block, self.stone_Entity, self.ares_Entity)
 
         self.config_level_select = selectBox(pyg.Rect(0, 0, 300, 60))
-        self.algochoose = algoChoose(pyg.Rect(0, 80, 300, 120))
+        self.algochoose = algoChoose(pyg.Rect(0, 70, 300, 60))
+        self.speedbutton = speedButton(pyg.Rect(0, 150, 300, 60))
+        self.stepbutton = stepButton(pyg.Rect(0, 220, 300, 60))
 
 
     def statusline_screen_draw(self):
@@ -49,6 +53,8 @@ class AresTour:
         self.config_surface.fill((255, 125, 125))
         self.config_level_select.draw(self.config_surface)
         self.algochoose.draw(self.config_surface)
+        self.speedbutton.draw(self.config_surface)
+        self.stepbutton.draw(self.config_surface)
         return
     def config_screen_event_handler(self, event):
         
