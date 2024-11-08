@@ -31,7 +31,7 @@ class speedButton:
                            "assets/speed_button/slowdown.jpg",
                            self.slowdown_rect)
         self.pause = Button("assets/speed_button/pause.jpg",
-                       "assets/speed_button/pause.jpg",
+                       "assets/speed_button/continue.jpg",
                        self.pause_rect)
         self.speedup = Button("assets/speed_button/speedup.jpg",
                          "assets/speed_button/speedup.jpg",
