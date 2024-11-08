@@ -9,7 +9,7 @@ def save_stats(stats: json, filename: str):
         # create file
         os.mknod(filename)
     stat_line = f'Steps: {stats['steps']}, Weight: {stats['weight']}, Node: {stats['node']}, Time (ms): {stats['time(ms)']}, Memory (MB): {stats['memory(MB)']}\n{stats['solution']}\n'
-    for i in range(0, len(lines), 2):
+    for i in range(len(lines)):
         if lines[i].strip() == stats['strategy']:
             lines[i + 1] = stat_line
             return
