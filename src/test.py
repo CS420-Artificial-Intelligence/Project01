@@ -6,7 +6,7 @@ from algorithm import ucs, bfs, dfs, a_star
 from save_stats import save_stats
 import os
 
-for file in ['input/input-01.txt']:
+for file in ['input/input-02.txt']:
     id = file.split('.')[0].split('-')[1]
     output_file = f'output/output-{id}.txt'
     s = State()
@@ -16,12 +16,18 @@ for file in ['input/input-01.txt']:
     bfs_algo = bfs.BFSAlgorithm(s)
     dfs_algo = dfs.DFSAlgorithm(s)
     a_star_algo = a_star.AStarAlgorithm(s)
-    ucs_algo.run()
+    
+
     bfs_algo.run()
+    # save_stats(bfs_algo.stats_json(), output_file)
+    # print("Done")
+    # break
     dfs_algo.run()
-    a_star_algo.run()
-    save_stats(ucs_algo.stats_json(), output_file)
-    save_stats(bfs_algo.stats_json(), output_file)
     save_stats(dfs_algo.stats_json(), output_file)
+    print("Done")
+    ucs_algo.run()
+    save_stats(ucs_algo.stats_json(), output_file)
+    print("Done")
+    a_star_algo.run()
     save_stats(a_star_algo.stats_json(), output_file)
     break

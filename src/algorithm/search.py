@@ -69,7 +69,7 @@ class Algorithm:
         return {
             'strategy': self.algorithm_name,
             'steps': self.goal_state.number_moved,
-            'weight': self.goal_state.number_moved + self.goal_state.weight_moved,
+            'weight': self.goal_state.weight_moved,
             'node': self.nodes_generated,
             'time(ms)': self.time * 1000,
             'memory(MB)': self.memory,
