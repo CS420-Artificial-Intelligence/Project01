@@ -6,7 +6,7 @@ from algorithm import ucs, bfs, dfs, a_star
 from save_stats import save_stats
 
 #run all file in input
-id = "hard-02"
+id = "01"
 input_file = "input/" + "input-" + id + ".txt"
 output_file = "output/" + "output-" + id + ".txt"
 bfs_state = bfs.BFSState()

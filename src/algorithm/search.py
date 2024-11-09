@@ -5,7 +5,6 @@ import tracemalloc
 
 class Algorithm:
     def __init__(self, search_ds: SearchDataStructure, initial_state, expand_goal: bool = True):
-        print(type(initial_state))
         self.search_ds = search_ds
         self.search_ds.push(initial_state)
         self.expand_goal = expand_goal
@@ -53,8 +52,8 @@ class Algorithm:
     def trace(self, state):
         # str -> action
         action = []
-        steps = state.number_moved
-        weight = state.weight_moved
+        steps = state.map.number_moved
+        weight = state.map.weight_moved
         tot_cost = state.g()
         while state is not None:
             action.append(state.input_path)
@@ -68,8 +67,8 @@ class Algorithm:
     def stats_json(self):
         return {
             'strategy': self.algorithm_name,
-            'steps': self.goal_state.number_moved,
-            'weight': self.goal_state.weight_moved,
+            'steps': self.goal_state.map.number_moved,
+            'weight': self.goal_state.map.weight_moved,
             'node': self.nodes_generated,
             'time(ms)': self.time * 1000,
             'memory(MB)': self.memory,
