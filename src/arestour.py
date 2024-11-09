@@ -87,6 +87,7 @@ class AresTour:
             if value3 == 0:
                 self.map.duration = max(0.1, self.map.duration * 1.2)
             if value3 == 1: 
+                self.map.inexplainmode = not self.map.inexplainmode
                 pass 
             if value3 == 2: 
                 pass 
