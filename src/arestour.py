@@ -44,7 +44,7 @@ class AresTour:
         self.speedbutton = speedButton(pyg.Rect(0, 150, 300, 60))
         self.stepbutton = stepButton(pyg.Rect(0, 220, 300, 60))
         
-        inf = [["Score", "0"], ["Moving", "0"], ["Time", "0s"]]
+        inf = [["Score", "0"], ["Step", "0"], ["Weight", "0"]]
         self.statusline = statusLine(pyg.Rect(0, 0, 900, 60), inf)
 
 
@@ -73,7 +73,7 @@ class AresTour:
             if len(s) == 1:
                 s = "0" + s
             self.map.loadMap(f"input/input-{s}.txt")
-        if value2 is not None: 
+        if value2 is not None and self.config_level_select.is_open == False:
             if value2 == 1: 
                 self.map.explain("ucs")
             if value2 == 2:
@@ -82,8 +82,8 @@ class AresTour:
                 self.map.explain("bfs")
             if value2 == 4:
                 self.map.explain("a_star")
-                time.sleep(1)
-        if value3 is not None:
+            time.sleep(1)
+        if value3 is not None and self.config_level_select.is_open == False and self.algochoose.is_open == False:
             if value3 == 0:
                 self.map.duration = max(0.1, self.map.duration * 1.2)
             if value3 == 1: 
@@ -93,10 +93,10 @@ class AresTour:
                 pass 
             if value3 == 3:
                 self.map.duration = min(3, self.map.duration / 1.2)
-        if value4 is not None:
+        if value4 is not None and self.config_level_select.is_open == False and self.algochoose.is_open == False:
             if value4 == 0:
                 self.map.explainPrev()
-            if value4 == 1: 
+            if value4 == 1:
                 self.map.loadMap(self.map.filename)
             if value4 == 2: 
                 self.map.explainNext()
@@ -136,6 +136,9 @@ class AresTour:
             self.statusline_screen_event_handler(event)
 
         self.map.continueExplain()
+        self.statusline.update(0, ["Score", str(self.map.maze.number_moved + self.map.maze.weight_moved)])
+        self.statusline.update(1, ["Step", str(self.map.maze.number_moved)])
+        self.statusline.update(2, ["Weight", str(self.map.maze.weight_moved)])
         return 
     def draw(self):
         

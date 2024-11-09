@@ -163,6 +163,7 @@ class Map:
         self.inexplainmode = True
         self.last_move = time.time() 
         self.solution = []
+        self.prev_solution = []
         if str == "ucs":
             self.run_ucs()
         if str == "dfs":
@@ -197,7 +198,6 @@ class Map:
         self.last_move = time.time()
         self.prev_solution.append(chr)
     def explainPrev(self): 
-        print("Not implemented yet: Map.explainPrev()")
         if len(self.prev_solution) == 0:
             return
         if time.time() - self.last_move < 0.1:

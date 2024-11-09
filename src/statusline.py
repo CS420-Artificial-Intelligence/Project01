@@ -33,6 +33,16 @@ class statusLine:
             
     def update(self, id, val): 
         self.inf[id] = val
+        surface = pyg.Surface((self.elementRect.width, self.elementRect.height))
+        if id % 2 == 0: 
+            surface.fill((125, 125, 255))
+        else:
+            surface.fill((150, 150, 255))
+        title_text = self.title_font.render(self.inf[id][0], True, (0, 0, 0))
+        value_text = self.value_font.render(self.inf[id][1], True, (0, 0, 0))
+        surface.blit(title_text, (30, self.elementRect.height // 2 - title_text.get_height() // 2))
+        surface.blit(value_text, (self.elementRect.width - 30 - value_text.get_width(), self.elementRect.height // 2 - value_text.get_height() // 2))
+        self.elements[id] = surface
     
     def draw(self, screen):
         
