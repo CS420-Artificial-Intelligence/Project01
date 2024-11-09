@@ -6,8 +6,8 @@ def save_stats(stats: json, filename: str):
             lines = f.readlines()
     except FileNotFoundError:
         lines = []
-        # create file
-        os.mknod(filename)
+        with open(filename, 'w') as f:
+            pass
     stat_line = f'Steps: {stats['steps']}, Weight: {stats['weight']}, Node: {stats['node']}, Time (ms): {stats['time(ms)']}, Memory (MB): {stats['memory(MB)']}\n{stats['solution']}\n'
     for i in range(0, len(lines), 2):
         if lines[i].strip() == stats['strategy']:

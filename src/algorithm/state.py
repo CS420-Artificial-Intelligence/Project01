@@ -1,4 +1,6 @@
 from maze import Maze
+import numpy as np
+from scipy.optimize import linear_sum_assignment
 class State:
     def __init__(self, maze: Maze = Maze(), number_moved: int = 0, weight_moved: int = 0, parent_state: 'State' = None, input_path: str = None):
         self.map = maze
@@ -20,19 +22,15 @@ class State:
         return State(new_map, self.number_moved + 1, self.weight_moved + cost, self, action)
 
     def g(self) -> int:
-        return self.number_moved + self.weight_moved
+        return self.weight_moved
     def h(self) -> int:
         # heuristic
-        sorted_stones_weight = sorted(self.map.stones, key=lambda x: x[2], reverse=True)
-        tmp_switches = self.map.switches
-        sum_h = 0
-        for i, (r, c, _, _) in enumerate(sorted_stones_weight):
-            max_dis = (0, 0)
-            for j, (r_switch,c_switch) in enumerate(tmp_switches):
-                max_dis = max(max_dis, (abs(r - r_switch) + abs(c - c_switch), j))
-            sum_h += max_dis[0]
-            tmp_switches.pop(max_dis[1])
-        return sum_h
+        cost_matrix = np.zeros((len(self.map.stones), len(self.map.switches)))
+        for i, stone in enumerate(self.map.stones):
+            for j, switch in enumerate(self.map.switches):
+                cost_matrix[i, j] = (abs(stone[0] - switch[0]) + abs(stone[1] - switch[1])) * stone[2]
+        row_indices, col_indices = linear_sum_assignment(cost_matrix)
+        return cost_matrix[row_indices, col_indices].sum()
     def f(self) -> int:
         # base on a specific algorithm
         return self.g()
