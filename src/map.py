@@ -65,7 +65,7 @@ Method:
 
 class Map:
     def __init__(self, filename, wall_block, nonwall_block, switch_block, stone_entity, ares_entity): 
-        self.block_size = 80
+        self.block_size = 60
         self.screenbias = [0, 0]
         self.wall_block = wall_block
         self.nonwall_block = nonwall_block

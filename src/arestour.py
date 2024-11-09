@@ -12,7 +12,7 @@ from statusline import statusLine
 
 class AresTour: 
     def __init__(self):
-        self.block_size = 80
+        self.block_size = 60
         self.crop_image = (0, 0, -1, -1)
         self.screen_size = (1200, 720)
         self.game_surface_size = (900, 660)
@@ -40,6 +40,7 @@ class AresTour:
         self.statusline_surface = pyg.Surface(self.statusline_surface_size)
         self.config_surface = pyg.Surface(self.config_surface_size)
         self.running = True
+        self.mapFile = "input/input-01.txt"
         self.map = Map("input/input-01.txt", self.wall_block, self.nonwall_block, self.switch_block, self.stone_Entity, self.ares_Entity)
 
         self.config_level_select = selectBox(pyg.Rect(0, 0, 300, 60))
@@ -75,11 +76,13 @@ class AresTour:
             # s = str(value1)
             # if len(s) == 1:
                 # s = "0" + s
+            self.mapFile = f"input/input-{s}.txt"
             # self.map.loadMap(f"input/input-{s}.txt")
             self.current_map_idx = value1
             self.map.reload_everything(self.current_map_idx, self.current_algo)
         if value2 is not None and self.config_level_select.is_open == False:
-            if value2 == 1: 
+            self.map.__init__(self.mapFile, self.wall_block, self.nonwall_block, self.switch_block, self.stone_Entity, self.ares_Entity)
+            if value2 == 1:
                 # self.map.explain("ucs")
                 self.current_algo = "ucs"
             if value2 == 2:
