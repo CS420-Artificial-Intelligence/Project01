@@ -73,9 +73,9 @@ class AresTour:
 
         if value1 is not None:
             # print(value1)
-            # s = str(value1)
-            # if len(s) == 1:
-                # s = "0" + s
+            s = str(value1)
+            if len(s) == 1:
+                s = "0" + s
             self.mapFile = f"input/input-{s}.txt"
             # self.map.loadMap(f"input/input-{s}.txt")
             self.current_map_idx = value1
