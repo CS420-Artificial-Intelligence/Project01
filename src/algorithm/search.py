@@ -31,7 +31,6 @@ class Algorithm:
                     self.goal_state = current_state
                     return current_state
                 if current_state.f() != self.reached[current_state]:
-                    
                     continue
                 self.expanded.add(current_state)
                 for state in self.expand(current_state):
