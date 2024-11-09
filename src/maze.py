@@ -56,7 +56,7 @@ class Maze:
             return check_valid and self.maze[r][c] != '*' and self.maze[r][c] != '$'
         return check_valid
     
-    def move_stone(self, r, c, direction: str):
+    def move_object(self, r, c, direction: str):
         m = {'U': (-1, 0), 'D': (1, 0), 'L': (0, -1), 'R': (0, 1)}
         new_r, new_c = r + m[direction][0], c + m[direction][1]
         return new_r, new_c
@@ -69,41 +69,28 @@ class Maze:
     
     def update_maze(self, r, c, new_r, new_c, new_stone_r, new_stone_c):
         #Handle ares position
-        if (self.maze[r][c] == '+'):
-            self.maze[r][c] = '.'
-        else:
-            self.maze[r][c] = ' '
+        self.maze[r][c] = '.' if self.maze[r][c] == '+' else ' '
         #Handle stone position
         if new_stone_r is not None:
-            if (self.maze[new_r][new_c] == '*'):
-                self.maze[new_r][new_c] = '.'
-            else:
-                self.maze[new_r][new_c] = ' '
+            self.maze[new_r][new_c] = '.' if self.maze[new_r][new_c] == '*' else ' '
         #Handle new ares position
-        if (self.maze[new_r][new_c] == '.'):
-            self.maze[new_r][new_c] = '+'
-        else:
-            self.maze[new_r][new_c] = '@'
+        self.maze[new_r][new_c] = '+' if self.maze[new_r][new_c] == '.' else '@'
         #Handle new stone position
         if new_stone_r is not None:
-            if (self.maze[new_stone_r][new_stone_c] == '.'):
-                self.maze[new_stone_r][new_stone_c] = '*'
-            else:
-                self.maze[new_stone_r][new_stone_c] = '$'
+            self.maze[new_stone_r][new_stone_c] = '*' if self.maze[new_stone_r][new_stone_c] == '.' else '$'
 
     #return 1 if we moved a stone, 0 if we move ares only, -1 if we can't move
     def apply_move(self, direction: str) -> tuple[int, int]:
         direction = direction.upper()
-        m = {'U': (-1, 0), 'D': (1, 0), 'L': (0, -1), 'R': (0, 1)}
         r, c = self.ares_position
-        new_r, new_c = r + m[direction][0], c + m[direction][1]
+        new_r, new_c = self.move_object(r, c, direction)
         if not self.is_valid_position(new_r, new_c, False):
             return [-1, -1]
         stone_index = self.get_stone(new_r, new_c)
         if stone_index is not None:
             weight = self.stones[stone_index][2]
             oldindex = self.stones[stone_index][3]
-            new_stone_r, new_stone_c = self.move_stone(new_r, new_c, direction)
+            new_stone_r, new_stone_c = self.move_object(new_r, new_c, direction)
             if not self.is_valid_position(new_stone_r, new_stone_c, True):
                 return [-1, -1]
             self.stones[stone_index] = (new_stone_r, new_stone_c, weight, oldindex)
@@ -115,7 +102,31 @@ class Maze:
             self.ares_position = (new_r, new_c)
             self.update_maze(r, c, new_r, new_c, None, None)
             return [0, 0]
-        
+    #return True if we can move, False if we can't
+    def back_move(self, direction: str) -> bool:
+        reverse_map = {'U': 'D', 'D': 'U', 'L': 'R', 'R': 'L', 'u' : 'd', 'd': 'u', 'l': 'r', 'r': 'l'}
+        direction = reverse_map[direction]
+        upper_direction = direction.upper()
+        r, c = self.ares_position
+        #Back ares position
+        new_r, new_c = self.move_object(r, c, upper_direction)
+        self.ares_position = (new_r, new_c)
+        self.maze[new_r][new_c] = '+' if self.maze[new_r][new_c] == '.' else '@'
+        self.maze[r][c] = '.' if self.maze[r][c] == '+' else ' '
+        #Back stone position
+        if direction.isupper():
+            r_stone, c_stone = self.move_object(r, c, reverse_map[direction])
+            stone_index = self.get_stone(r_stone, c_stone)
+            if stone_index is not None:
+                weight = self.stones[stone_index][2]
+                oldindex = self.stones[stone_index][3]
+                self.stones[stone_index] = (r, c, weight, oldindex)
+                self.stones = sorted(self.stones)
+                self.maze[r][c] = '*' if self.maze[r][c] == '.' else '$'
+                self.maze[r_stone][c_stone] = '.' if self.maze[r_stone][c_stone] == '*' else ' '
+            else:
+                return False
+        return True
     def print_map(self):
         for row in self.maze:
             print(''.join(row))
