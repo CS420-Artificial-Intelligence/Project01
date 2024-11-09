@@ -69,7 +69,10 @@ class AresTour:
 
         if value1 is not None:
             print(value1)
-            self.map.loadMap(f"input/input-0{value1}.txt")
+            s = str(value1)
+            if len(s) == 1:
+                s = "0" + s
+            self.map.loadMap(f"input/input-{s}.txt")
         if value2 is not None: 
             if value2 == 1: 
                 self.map.explain("ucs")

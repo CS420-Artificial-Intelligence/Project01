@@ -8,7 +8,7 @@ from save_stats import save_stats
 import os
 
 #run all file in input
-id = "01"
+id = "02"
 input_file = "input/" + "input-" + id + ".txt"
 output_file = "output/" + "output-" + id + ".txt"
 bfs_state = bfs.BFSState()
