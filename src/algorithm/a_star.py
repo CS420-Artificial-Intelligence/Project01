@@ -23,7 +23,7 @@ class AStarState(State):
         return AStarState(new_map, self.number_moved + 1, self.weight_moved + cost, self, action)
 
 class AStarAlgorithm(Algorithm):
-    def __init__(self, search_ds: SearchDataStructure, initial_state: AStarState = AStarState(), expand_goal: bool = False):
+    def __init__(self, search_ds: SearchDataStructure, initial_state: AStarState = AStarState(), expand_goal: bool = True):
         self.search_ds = search_ds
         self.search_ds.push(initial_state)
         self.expand_goal = expand_goal

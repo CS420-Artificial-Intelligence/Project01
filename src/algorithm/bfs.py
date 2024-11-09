@@ -23,7 +23,7 @@ class BFSState(State):
         return BFSState(new_map, self.number_moved + 1, self.weight_moved + cost, self, action)
 
 class BFSAlgorithm(Algorithm):
-    def __init__(self, search_ds: SearchDataStructure, initial_state: BFSState = BFSState(), expand_goal: bool = True):
+    def __init__(self, search_ds: SearchDataStructure, initial_state: BFSState = BFSState(), expand_goal: bool = False):
         self.search_ds = search_ds
         self.search_ds.push(initial_state)
         self.expand_goal = expand_goal
