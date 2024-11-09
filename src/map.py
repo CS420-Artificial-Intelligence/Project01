@@ -97,6 +97,8 @@ class Map:
         self.maze = Maze(self.filename)
         self.stoneslist = self.maze.stones
         self.textlist = []
+        self.solution = []
+        self.prev_solution = []
         for stone in self.stoneslist:
             self.textlist.append(self.font.render(str(stone[2]), True, (255, 255, 255)))
         return
