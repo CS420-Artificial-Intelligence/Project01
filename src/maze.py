@@ -47,7 +47,7 @@ class Maze:
                     assert char == ' ' or char == '#', "Invalid character in input file, found " + char
             self.maze.append(row)
         self.num_rows = len(self.maze)
-        self.num_cols = len(self.maze[0])
+        self.num_cols = len(max(self.maze, key=len))
         self.stones = sorted(self.stones)
 
     def is_valid_position(self, r, c, is_stone):
