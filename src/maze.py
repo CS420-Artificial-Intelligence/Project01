@@ -47,7 +47,7 @@ class Maze:
                     assert char == ' ' or char == '#', "Invalid character in input file, found " + char
             self.maze.append(row)
         self.num_rows = len(self.maze)
-        self.num_cols = len(self.maze[0])
+        self.num_cols = len(max(self.maze, key=len))
         self.stones = sorted(self.stones)
 
     def is_valid_position(self, r, c, is_stone):
@@ -55,7 +55,8 @@ class Maze:
         if is_stone:
             return check_valid and self.maze[r][c] != '*' and self.maze[r][c] != '$'
         return check_valid
-    
+    def is_cannot_move(self, r, c):
+        return self.maze[r][c] != '*' and (self.maze[r - 1][c] == '#' or self.maze[r + 1][c] == '#') and (self.maze[r][c - 1] == '#' or self.maze[r][c + 1] == '#')
     def move_object(self, r, c, direction: str):
         m = {'U': (-1, 0), 'D': (1, 0), 'L': (0, -1), 'R': (0, 1)}
         new_r, new_c = r + m[direction][0], c + m[direction][1]
@@ -93,10 +94,12 @@ class Maze:
             new_stone_r, new_stone_c = self.move_object(new_r, new_c, direction)
             if not self.is_valid_position(new_stone_r, new_stone_c, True):
                 return [-1, -1]
+            self.update_maze(r, c, new_r, new_c, new_stone_r, new_stone_c)
+            if self.is_cannot_move(new_stone_r, new_stone_c):
+                return [-1, -1]
             self.stones[stone_index] = (new_stone_r, new_stone_c, weight, oldindex)
             self.stones = sorted(self.stones)
             self.ares_position = (new_r, new_c)
-            self.update_maze(r, c, new_r, new_c, new_stone_r, new_stone_c)
             return [1, weight]
         else:
             self.ares_position = (new_r, new_c)

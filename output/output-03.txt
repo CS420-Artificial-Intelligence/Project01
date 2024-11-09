@@ -1,0 +1,12 @@
+BFS
+Steps: 2, Weight: 5, Node: 4, Time (ms): 0.316099998599384, Memory (MB): 0.006397247314453125
+rU
+DFS
+Steps: 2, Weight: 5, Node: 3, Time (ms): 0.3100000030826777, Memory (MB): 0.00434112548828125
+rU
+UCS
+Steps: 2, Weight: 5, Node: 6, Time (ms): 0.7743999958620407, Memory (MB): 0.007518768310546875
+rU
+A*
+Steps: 2, Weight: 5, Node: 6, Time (ms): 1.0889999975915998, Memory (MB): 0.009347915649414062
+rU

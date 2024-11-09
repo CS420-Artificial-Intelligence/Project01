@@ -13,28 +13,29 @@ class State:
         self.map.load_from_file(input_path)
 
     def apply_action(self, action: str) -> 'State':
-        new_map = self.map.copy()
-        status, cost = new_map.apply_move(action)
-        if status == -1:
-            return None
-        if status == 0:
-            action = action.lower()
-        return State(new_map, self.number_moved + 1, self.weight_moved + cost, self, action)
+        assert False, 'This method should be overriden'
+        # new_map = self.map.copy()
+        # status, cost = new_map.apply_move(action)
+        # if status == -1:
+        #     return None
+        # if status == 0:
+        #     action = action.lower()
+        # return State(new_map, self.number_moved + 1, self.weight_moved + cost, self, action)
 
     def g(self) -> int:
-        return self.weight_moved
+        return self.weight_moved + self.number_moved
     def h(self) -> int:
-        # heuristic
+        # heuristic: Hungarian algorithm
         cost_matrix = np.zeros((len(self.map.stones), len(self.map.switches)))
         for i, stone in enumerate(self.map.stones):
             for j, switch in enumerate(self.map.switches):
                 cost_matrix[i, j] = (abs(stone[0] - switch[0]) + abs(stone[1] - switch[1])) * stone[2]
         row_indices, col_indices = linear_sum_assignment(cost_matrix)
-        return cost_matrix[row_indices, col_indices].sum()
+        cost =  cost_matrix[row_indices, col_indices].sum()
+        return cost
     def f(self) -> int:
-        # base on a specific algorithm
-        return self.g()
-        pass
+        assert False, 'This method should be overriden'
+        # return self.g() + self.h()
     def __hash__(self) -> int:
         # hash stones, switches, character, walls
         return hash(self.map)
@@ -42,9 +43,9 @@ class State:
         return self.map == other.map
     def is_goal(self) -> bool:
         return self.map.is_final()
-    def parent_state(self) -> 'State':
+    def parent_state(self):
         return self.parent_state
-    def expand(self) -> list['State']:
+    def expand(self):
         result = []
         for action in ['U', 'D', 'L', 'R']:
             new_state = self.apply_action(action)

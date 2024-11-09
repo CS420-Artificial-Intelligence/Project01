@@ -1,6 +1,0 @@
-A*
-Steps: 44, Weight: 1607, Node: 2082434, Time (ms): 565677.335699962, Memory (MB): 3326.694814682007
-llLuLLDuLrrrdLLLrrrrrddlllULuurrdLLrrrruLLLL
-BFS
-Steps: 44, Weight: 1563, Node: 2082434, Time (ms): 409609.8093999899, Memory (MB): 3326.694814682007
-llLuLLDuLrrrdLLLrrrrrddlllULuurrdLLrrrruLLLL
