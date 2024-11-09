@@ -2,10 +2,8 @@ from maze import Maze
 import numpy as np
 from scipy.optimize import linear_sum_assignment
 class State:
-    def __init__(self, maze: Maze = Maze(), number_moved: int = 0, weight_moved: int = 0, parent_state: 'State' = None, input_path: str = None):
+    def __init__(self, maze: Maze = Maze(), parent_state: 'State' = None, input_path: str = None):
         self.map = maze
-        self.number_moved = number_moved
-        self.weight_moved = weight_moved
         self.parent_state = parent_state
         self.input_path = input_path
 
@@ -23,7 +21,7 @@ class State:
         # return State(new_map, self.number_moved + 1, self.weight_moved + cost, self, action)
 
     def g(self) -> int:
-        return self.weight_moved + self.number_moved
+        return self.map.weight_moved + self.map.number_moved
     def h(self) -> int:
         # heuristic: Hungarian algorithm
         cost_matrix = np.zeros((len(self.map.stones), len(self.map.switches)))

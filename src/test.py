@@ -1,11 +1,9 @@
 from algorithm.search_ds.stack import Stack
-from maze import Maze
 from algorithm.state import State
 from algorithm.search import Algorithm
 from algorithm.search_ds import PriorityQueue, Queue
 from algorithm import ucs, bfs, dfs, a_star
 from save_stats import save_stats
-import os
 
 #run all file in input
 id = "02"
