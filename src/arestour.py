@@ -19,6 +19,9 @@ class AresTour:
         self.statusline_surface_size = (900, 60)
         self.config_surface_size = (300, 720)
 
+        self.current_algo = "ucs"
+        self.current_map_idx = 1
+
         self.wall_img = pyg.image.load("assets/wall.png")
         self.wall_block = Block(self.wall_img, (0, 0, self.block_size, self.block_size), self.crop_image)
         self.nonwall_img = pyg.image.load("assets/nonwall.png")
@@ -68,21 +71,27 @@ class AresTour:
         value4 = self.stepbutton.event_handler(event)
 
         if value1 is not None:
-            print(value1)
-            s = str(value1)
-            if len(s) == 1:
-                s = "0" + s
-            self.map.loadMap(f"input/input-{s}.txt")
+            # print(value1)
+            # s = str(value1)
+            # if len(s) == 1:
+                # s = "0" + s
+            # self.map.loadMap(f"input/input-{s}.txt")
+            self.current_map_idx = value1
+            self.map.reload_everything(self.current_map_idx, self.current_algo)
         if value2 is not None and self.config_level_select.is_open == False:
             if value2 == 1: 
-                self.map.explain("ucs")
+                # self.map.explain("ucs")
+                self.current_algo = "ucs"
             if value2 == 2:
-                self.map.explain("dfs")
+                # self.map.explain("dfs")
+                self.current_algo = "dfs"
             if value2 == 3:
-                self.map.explain("bfs")
+                # self.map.explain("bfs")
+                self.current_algo = "bfs"
             if value2 == 4:
-                self.map.explain("a_star")
-            time.sleep(1)
+                # self.map.explain("a_star")
+                self.current_algo = "a_star"
+            self.map.reload_everything(self.current_map_idx, self.current_algo)
         if value3 is not None and self.config_level_select.is_open == False and self.algochoose.is_open == False:
             if value3 == 0:
                 self.map.duration = max(0.1, self.map.duration * 1.2)
@@ -97,7 +106,8 @@ class AresTour:
             if value4 == 0:
                 self.map.explainPrev()
             if value4 == 1:
-                self.map.loadMap(self.map.filename)
+                # self.map.loadMap(self.map.filename)
+                self.map.reload_everything(self.current_map_idx, self.current_algo)
             if value4 == 2: 
                 self.map.explainNext()
         return

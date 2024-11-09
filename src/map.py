@@ -92,6 +92,20 @@ class Map:
         for stone in self.stoneslist:
             self.textlist.append(self.font.render(str(stone[2]), True, WHITE))
         return
+    def load_path(self, path, algo):
+        names = {
+            'ucs': 'UCS',
+            'dfs': 'DFS',
+            'bfs': 'BFS',
+            'a_star': 'A*'
+        }
+        with open(path, 'r') as f:
+            lines = f.readlines()
+            for i in range(len(lines)):
+                if lines[i] == names[algo] + '\n':
+                    return lines[i + 2].strip()
+        # throw error
+        raise Exception('No solution found')
     def loadMap(self, filename):
         self.filename = filename
         self.maze = Maze(self.filename)
@@ -207,6 +221,21 @@ class Map:
         self.last_move = time.time()
         self.solution.append(chr)
         # pass 
+
+    def reload_everything(self, test_idx, algo):
+        idx_str = str(test_idx)
+        if len(idx_str) == 1:
+            idx_str = '0' + idx_str
+        input_path = f'input/input-{idx_str}.txt'
+        output_path = f'output/output-{idx_str}.txt'
+        self.loadMap(input_path)
+        self.inexplainmode = True
+        self.solution = []
+        self.prev_solution = []
+        self.last_move = time.time()
+        solution = self.load_path(output_path, algo)
+        for i in range(len(solution) - 1, -1, -1):
+            self.solution.append(solution[i])
 
     def setBlockSizes(self, block_size):
         self.block_size = block_size
