@@ -2,6 +2,8 @@ class Maze:
     def __init__(self, filename = None): 
         self.num_rows = 0
         self.num_cols = 0
+        self.number_moved = 0
+        self.weight_moved = 0
         self.maze = []
         self.stones = []
         self.switches = []
@@ -13,6 +15,8 @@ class Maze:
         new_map = Maze()
         new_map.num_rows = self.num_rows
         new_map.num_cols = self.num_cols
+        new_map.number_moved = self.number_moved
+        new_map.weight_moved = self.weight_moved
         new_map.maze = [row.copy() for row in self.maze]
         new_map.stones = self.stones.copy()
         new_map.switches = self.switches.copy()
@@ -86,25 +90,28 @@ class Maze:
         r, c = self.ares_position
         new_r, new_c = self.move_object(r, c, direction)
         if not self.is_valid_position(new_r, new_c, False):
-            return [-1, -1]
+            return -1
         stone_index = self.get_stone(new_r, new_c)
         if stone_index is not None:
             weight = self.stones[stone_index][2]
             oldindex = self.stones[stone_index][3]
             new_stone_r, new_stone_c = self.move_object(new_r, new_c, direction)
             if not self.is_valid_position(new_stone_r, new_stone_c, True):
-                return [-1, -1]
+                return -1
             self.update_maze(r, c, new_r, new_c, new_stone_r, new_stone_c)
             if self.is_cannot_move(new_stone_r, new_stone_c):
-                return [-1, -1]
+                return -1
             self.stones[stone_index] = (new_stone_r, new_stone_c, weight, oldindex)
             self.stones = sorted(self.stones)
             self.ares_position = (new_r, new_c)
-            return [1, weight]
+            self.number_moved += 1
+            self.weight_moved += weight
+            return 1
         else:
             self.ares_position = (new_r, new_c)
             self.update_maze(r, c, new_r, new_c, None, None)
-            return [0, 0]
+            self.number_moved += 1
+            return 0
     #return True if we can move, False if we can't
     def back_move(self, direction: str) -> bool:
         reverse_map = {'U': 'D', 'D': 'U', 'L': 'R', 'R': 'L', 'u' : 'd', 'd': 'u', 'l': 'r', 'r': 'l'}
@@ -127,8 +134,10 @@ class Maze:
                 self.stones = sorted(self.stones)
                 self.maze[r][c] = '*' if self.maze[r][c] == '.' else '$'
                 self.maze[r_stone][c_stone] = '.' if self.maze[r_stone][c_stone] == '*' else ' '
+                self.weight_moved -= weight
             else:
                 return False
+        self.number_moved -= 1
         return True
     def print_map(self):
         for row in self.maze:
