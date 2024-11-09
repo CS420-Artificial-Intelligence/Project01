@@ -3,7 +3,7 @@ import time
 
 from algorithm.state import State
 from algorithm.search import Algorithm
-from algorithm.search_ds import PriorityQueue
+from algorithm.search_ds import PriorityQueue, Queue, Stack
 from algorithm import ucs, bfs, dfs, a_star
 
 import pygame as pyg 
@@ -85,6 +85,7 @@ class Map:
         self.textlist = []
         self.stoneslist = self.maze.stones 
         self.solution = []
+        self.prev_solution = []
 
         WHITE = (255, 255, 255)
 
@@ -99,9 +100,18 @@ class Map:
         for stone in self.stoneslist:
             self.textlist.append(self.font.render(str(stone[2]), True, (255, 255, 255)))
         return
+
+    def return_num_col(self):
+        return self.maze.num_cols
+
+    def return_num_row(self):
+        return self.maze.num_rows
+
     def run_ucs(self):
-        state = State(self.maze)
-        ucs_engine = ucs.UCSAlgorithm(state) 
+        # state = State(self.maze)
+        # ucs_engine = ucs.UCSAlgorithm(state) 
+        state = ucs.UCSState(self.maze)
+        ucs_engine = ucs.UCSAlgorithm(PriorityQueue(), state)
         ucs_engine.run()
         str = ucs_engine.stats_json()['solution'] 
         
@@ -110,8 +120,10 @@ class Map:
             self.solution.append(str[i])
 
     def run_dfs(self):
-        state = State(self.maze)
-        dfs_engine = dfs.DFSAlgorithm(state)
+        # state = State(self.maze)
+        # dfs_engine = dfs.DFSAlgorithm(state)
+        state = dfs.DFSState(self.maze)
+        dfs_engine = dfs.DFSAlgorithm(Stack(), state)
         dfs_engine.run()
         str = dfs_engine.stats_json()['solution']
         
@@ -119,8 +131,10 @@ class Map:
             self.solution.append(str[i]) 
 
     def run_bfs(self):
-        state = State(self.maze)
-        bfs_engine = bfs.BFSAlgorithm(state)
+        # state = State(self.maze)
+        # bfs_engine = bfs.BFSAlgorithm(state)
+        state = bfs.BFSState(self.maze)
+        bfs_engine = bfs.BFSAlgorithm(Queue(), state)
         bfs_engine.run()
         str = bfs_engine.stats_json()['solution']
 
@@ -129,8 +143,10 @@ class Map:
         
 
     def run_a_star(self):
-        state = State(self.maze)
-        a_star_engine = a_star.AStarAlgorithm(state)
+        # state = State(self.maze)
+        # a_star_engine = a_star.AStarAlgorithm(state)
+        state = a_star.AStarState(self.maze)
+        a_star_engine = a_star.AStarAlgorithm(PriorityQueue(), state)
         a_star_engine.run()
         
         str = a_star_engine.stats_json()['solution']
@@ -166,6 +182,7 @@ class Map:
         chr = self.solution.pop() 
         self.maze.apply_move(chr)
         self.last_move = time.time()
+        self.prev_solution.append(chr)
 
     def explainNext(self): 
         if len(self.solution) == 0:
@@ -176,9 +193,18 @@ class Map:
         chr = self.solution.pop() 
         self.maze.apply_move(chr)
         self.last_move = time.time()
+        self.prev_solution.append(chr)
     def explainPrev(self): 
         print("Not implemented yet: Map.explainPrev()")
-        pass 
+        if len(self.prev_solution) == 0:
+            return
+        if time.time() - self.last_move < 0.1:
+            return
+        chr = self.prev_solution.pop()
+        self.maze.back_move(chr)
+        self.last_move = time.time()
+        self.solution.append(chr)
+        # pass 
 
     def setBlockSizes(self, block_size):
         self.block_size = block_size
@@ -221,6 +247,8 @@ class Map:
             for j in range(len(self.matrix[i])):
                 position = (j + self.screenbias[0]) * self.block_size, (i + self.screenbias[1]) * self.block_size
                 if self.matrix[i][j] == "#":
+                    self.nonwall_block.changePositionV(position)
+                    self.nonwall_block.draw(screen)
                     self.wall_block.changePositionV(position)
                     self.wall_block.draw(screen)
 
@@ -243,11 +271,13 @@ class Map:
                 if self.matrix[i][j] == " ":
                     self.nonwall_block.changePositionV(position)
                     self.nonwall_block.draw(screen)
+
                 if self.matrix[i][j] == "@":
                     self.nonwall_block.changePositionV(position)
                     self.nonwall_block.draw(screen)
                     self.ares_entity.changePositionV(position)
                     self.ares_entity.draw(screen)
+
                 if self.matrix[i][j] == "$":
                     self.nonwall_block.changePositionV(position)
                     self.nonwall_block.draw(screen)

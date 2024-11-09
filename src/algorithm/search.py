@@ -1,16 +1,16 @@
 from algorithm.search_ds.search_ds import SearchDataStructure
-from algorithm.state import State
 import timeit
 import tracemalloc
 
 
 class Algorithm:
-    def __init__(self, search_ds: SearchDataStructure, initial_state: State, expand_goal: bool = True):
+    def __init__(self, search_ds: SearchDataStructure, initial_state, expand_goal: bool = True):
+        print(type(initial_state))
         self.search_ds = search_ds
         self.search_ds.push(initial_state)
         self.expand_goal = expand_goal
         self.reached = dict()
-        self.reached[initial_state] = 0
+        self.reached[initial_state] = initial_state.f()
         self.expanded = set()
         self.nodes_generated = 0
         self.time = 0
@@ -18,7 +18,7 @@ class Algorithm:
         self.goal_state = None
         self.algorithm_name = 'Best First Search'
 
-    def expand(self, state: State):
+    def expand(self, state):
         return state.expand()
 
     def run(self):
@@ -50,7 +50,7 @@ class Algorithm:
             tracemalloc.stop()
 
 
-    def trace(self, state: State):
+    def trace(self, state):
         # str -> action
         action = []
         steps = state.number_moved
@@ -69,7 +69,7 @@ class Algorithm:
         return {
             'strategy': self.algorithm_name,
             'steps': self.goal_state.number_moved,
-            'weight': self.goal_state.number_moved + self.goal_state.weight_moved,
+            'weight': self.goal_state.weight_moved,
             'node': self.nodes_generated,
             'time(ms)': self.time * 1000,
             'memory(MB)': self.memory,
