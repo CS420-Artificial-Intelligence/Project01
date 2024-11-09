@@ -9,11 +9,16 @@ def save_stats(stats: json, filename: str):
         with open(filename, 'w') as f:
             pass
     stat_line = f'Steps: {stats['steps']}, Weight: {stats['weight']}, Node: {stats['node']}, Time (ms): {stats['time(ms)']}, Memory (MB): {stats['memory(MB)']}\n{stats['solution']}\n'
+    is_updated = False
     for i in range(len(lines)):
         if lines[i].strip() == stats['strategy']:
-            lines[i + 1] = stat_line
-            return
-    lines.append(stats['strategy'] + '\n')
-    lines.append(stat_line)
+            stat = stat_line.split('\n')
+            lines[i + 1] = stat[0] + '\n'
+            lines[i + 2] = stat[1] + '\n'
+            is_updated = True
+            break
+    if not is_updated:   
+        lines.append(stats['strategy'] + '\n')
+        lines.append(stat_line)
     with open(filename, 'w') as f:
         f.writelines(lines)
