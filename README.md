@@ -1,6 +1,6 @@
 # Ares’s adventure
 
-Run the file ./Source/main.py to compile the project
+Run the file ./src/main.py to compile the project
 
 
 
